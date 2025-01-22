@@ -136,7 +136,7 @@ const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
             <div className="event-cards flex flex-col gap-2 mt-5 overflow-scroll max-h-[360px]">
               {isPending && <p>Loading...</p>}
               {error && <p>Error: {error.message}</p>}
-              {filteredData.length ? (
+              {filteredData?.length ? (
                 filteredData.map((event: EventItem) => (
                   <EventCard key={event.id} {...event} />
                 ))

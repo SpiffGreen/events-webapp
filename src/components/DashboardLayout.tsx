@@ -57,6 +57,24 @@ const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [search, setSearch] = useState("");
   const [petsAllowed, setPetsAllowed] = useState("Any");
 
+  const filteredData = data
+    ?.filter((data: EventItem) => {
+      if (search === "") {
+        return data;
+      } else if (data.title.toLowerCase().includes(search.toLowerCase())) {
+        return data;
+      }
+    })
+    ?.filter((data: EventItem) => {
+      if (petsAllowed === "Any") {
+        return data;
+      } else if (petsAllowed === "Allowed") {
+        return data.petsAllowed === true;
+      } else if (petsAllowed === "Not Allowed") {
+        return data.petsAllowed === false;
+      }
+    });
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Nav section */}
@@ -106,41 +124,25 @@ const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
 
       {/* Display */}
       <main className="bg-gray-100 grow">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex gap-4">
-          <div className="max-w-[350px]">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-end flex-wrap-reverse gap-4">
+          <div className="md:max-w-[350px] w-full">
             <div className="top">
               <p>Available events</p>
               <p className="font-light text-gray-600 text-sm">
-                {data?.length} events available
+                {filteredData?.length} events available
               </p>
             </div>
 
-            <div className="event-cards flex flex-col gap-2 mt-5">
+            <div className="event-cards flex flex-col gap-2 mt-5 overflow-scroll max-h-[360px]">
               {isPending && <p>Loading...</p>}
               {error && <p>Error: {error.message}</p>}
-              {data &&
-                data
-                  ?.filter((data: EventItem) => {
-                    if (search === "") {
-                      return data;
-                    } else if (
-                      data.title.toLowerCase().includes(search.toLowerCase())
-                    ) {
-                      return data;
-                    }
-                  })
-                  ?.filter((data: EventItem) => {
-                    if (petsAllowed === "Any") {
-                      return data;
-                    } else if (petsAllowed === "Allowed") {
-                      return data.petsAllowed === true;
-                    } else if (petsAllowed === "Not Allowed") {
-                      return data.petsAllowed === false;
-                    }
-                  })
-                  .map((event: EventItem) => (
-                    <EventCard key={event.id} {...event} />
-                  ))}
+              {filteredData.length ? (
+                filteredData.map((event: EventItem) => (
+                  <EventCard key={event.id} {...event} />
+                ))
+              ) : (
+                <p>No events</p>
+              )}
             </div>
           </div>
           {children}

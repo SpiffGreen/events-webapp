@@ -13,7 +13,7 @@ function EventPage() {
   });
   return (
     <DashboardLayout>
-      <div className="bg-white rounded-lg grow border">
+      <div className="bg-white rounded-lg grow border min-w-[300px] h-fit">
         {isPending && <p className="p-4">Loading...</p>}
         {error && <p className="p-4">Error: {error.message}</p>}
         {data && (

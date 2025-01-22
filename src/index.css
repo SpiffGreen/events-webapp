@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 62px,
+    #474bff 62px,
+    #474bff 124px
+  );
+  background-color: #4bbdff;
+}
